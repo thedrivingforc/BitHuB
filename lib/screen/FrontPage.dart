@@ -26,25 +26,24 @@ class _FrontPageState extends State<FrontPage> {
 
   @override
   void initState() {
-    checkForUpdate();
+    checkForUpdate().whenComplete(() {});
     getValid().whenComplete(() {});
     super.initState();
   }
 
   Future<void> checkForUpdate() async {
-    InAppUpdate.checkForUpdate().then((info) {
+    await InAppUpdate.checkForUpdate().then((info) {
       setState(() {
         _updateInfo = info;
       });
-      if (_updateInfo.updateAvailability ==
-          UpdateAvailability.updateAvailable) {
-        print("Update Available....");
-        InAppUpdate.performImmediateUpdate();
-        print("Update in progress....");
-      } else {
-        print("No update Available....");
-      }
     });
+
+    if (_updateInfo.updateAvailability == UpdateAvailability.updateAvailable) {
+      print("Update Available....");
+      await InAppUpdate.performImmediateUpdate();
+    } else {
+      print("No update Available....");
+    }
   }
 
   Future<void> getValid() async {
