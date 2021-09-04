@@ -124,7 +124,7 @@ class _AboutUsState extends State<AboutUs> {
               child: UsersGuide(
                   message:
                       'ATTENDANCE DATABASE is stored LOCALLY on USERS DEVICE. If app is uninstalled all records will be PERMANENTLY LOST.\n\n'
-                      'Contact devs for app support.\n version: 1.0.6+8\n'),
+                      'Contact devs for app support.\n version: 1.0.7+9 (In app updates)\n'),
             ),
             SizedBox(height: 30.0)
           ],
