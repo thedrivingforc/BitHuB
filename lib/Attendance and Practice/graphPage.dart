@@ -44,7 +44,7 @@ class _GraphPageState extends State<GraphPage> {
     }
 
     if (userList == null) {
-      userList = List<User>();
+      userList = [];
       print('In if block');
       updateListView();
     }
@@ -239,7 +239,8 @@ class _GraphPageState extends State<GraphPage> {
                                       setState(() {
                                         userList[position].present++;
                                         userList[position].total++;
-                                        databaseHelper.update(userList[position]);
+                                        databaseHelper
+                                            .update(userList[position]);
                                       });
                                     }),
                                 // SizedBox(
@@ -250,7 +251,8 @@ class _GraphPageState extends State<GraphPage> {
                                     onPressed: () {
                                       setState(() {
                                         userList[position].total++;
-                                        databaseHelper.update(userList[position]);
+                                        databaseHelper
+                                            .update(userList[position]);
                                       });
                                     }),
                               ],

@@ -59,11 +59,16 @@ class _FrontPageState extends State<FrontPage> {
       if (doc.exists) {
         // this will check availability of document
         setState(() {
-          branch = doc.data()['Branch'];
-          semester = doc.data()['Semester'];
-          roll = doc.data()['RollNo'];
-          name = doc.data()['Name'];
-          email = doc.data()['Email'];
+          branch = doc.get('Branch');
+          semester = doc.get('Semester');
+          roll = doc.get('RollNo');
+          name = doc.get('Name');
+          email = doc.get('Email');
+          // branch = doc.data()['Branch'];
+          // semester = doc.data()['Semester'];
+          // roll = doc.data()['RollNo'];
+          // name = doc.data()['Name'];
+          // email = doc.data()['Email'];
         });
 
         sharedPref.setString('name', name);
