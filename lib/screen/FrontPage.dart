@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:study_material_app/Animation/CustomWidgets.dart';
@@ -9,6 +11,7 @@ import 'package:study_material_app/Books/bookHome.dart';
 import 'package:study_material_app/Maps/mapsHome.dart';
 import 'package:study_material_app/Holiday%20Calendar/HolidayPage.dart';
 import 'package:study_material_app/BIT_Bus/bus.dart';
+import 'package:study_material_app/main.dart';
 import 'package:study_material_app/screen/profilePage.dart';
 import 'package:flutter_web_browser/flutter_web_browser.dart';
 import 'package:in_app_update/in_app_update.dart';
@@ -24,10 +27,60 @@ class _FrontPageState extends State<FrontPage> {
   String name, semester, branch, email, roll;
   AppUpdateInfo _updateInfo;
 
+  // void showNotification() {
+  //   flutterLocalNotificationsPlugin.show(
+  //       0,
+  //       "",
+  //       "",
+  //       NotificationDetails(
+  //           android: AndroidNotificationDetails(channel.id, channel.name, channel.description,
+  //               importance: Importance.high,
+  //               color: Colors.blue,
+  //               playSound: true,
+  //               icon: '@mipmap/ic_launcher')));
+  // }
+
   @override
   void initState() {
     checkForUpdate().whenComplete(() {});
     getValid().whenComplete(() {});
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+                android: AndroidNotificationDetails(
+                    channel.id, channel.name, channel.description,
+                    color: kPrimaryColorActive,
+                    playSound: true,
+                    icon: '@mipmap/ic_launcer')
+                    ),
+                    );
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title),
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Text(notification.body)],
+                ),
+              );
+            });
+      }
+    });
     super.initState();
   }
 
